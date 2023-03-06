@@ -19,7 +19,7 @@ user:~/environment/raisetech-live8-sample-app (main) $
 #### DB サーバーについて調べてみましょう。
 - サンプルアプリケーションで使った DB サーバー（DB エンジン）の名前と、今 Cloud9 で動作しているバージョンはいくつか確認してみましょう。
 
- DB サーバー（DB エンジン）の名前:MySQL
+ DB サーバー（DB エンジン）の名前:MySQL<br>
  バージョン: 8.0.32
 ```
 Your MySQL connection id is 35
