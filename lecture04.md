@@ -7,6 +7,17 @@
 
 - EC2 と RDS を構築してください
 
+EC2
+
+![4-004](https://user-images.githubusercontent.com/126846580/223591288-fa7a14c4-3be6-443e-ab31-9cee6a7e85db.png)
+
+RDS
+
+![4-005](https://user-images.githubusercontent.com/126846580/223591292-d7314ea0-71bd-4351-b4dc-f30e2ad25c0e.png)
+
+
+EC2 ログイン確認
+
 ![4-002](https://user-images.githubusercontent.com/126846580/223374948-665b3867-df0a-4346-8e50-0d512a5de592.png)
 
 
