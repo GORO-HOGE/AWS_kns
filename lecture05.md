@@ -35,5 +35,4 @@ S3の中にアクセスログが格納されていることを確認
 
 - ここまでが問題無く動作したら、その環境を構成図に書き起こしてください。
 
-
-![構成図 drawio](https://user-images.githubusercontent.com/126846580/224254484-cdd03fff-fc43-4026-ad54-02acf84b9e94.png)
+![構成図2 drawio](https://user-images.githubusercontent.com/126846580/224588637-14430bdd-e1e1-42e1-a3b3-d200a7a12d06.png)
