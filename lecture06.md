@@ -4,45 +4,45 @@
 
 ec2 作成
 
-![6_0001](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0001.png)
+![6_0001](./%E7%A0%94%E4%BF%AE/6/6_0001.png)
 
 ec2 停止
 
-![6_0002](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0002.png)
+![6_0002](./%E7%A0%94%E4%BF%AE/6/6_0002.png)
 
 s3 作成
 
-![6_0003](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0003.png)
+![6_0003](./%E7%A0%94%E4%BF%AE/6/6_0003.png)
 
 - 今日学んだ CloudWatch アラームを使って、ALB のアラームを設定して、メール通知してみてください。
 
 ヘルスチェックOKアラート設定
-![6_0004](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0004.png)
+![6_0004](./%E7%A0%94%E4%BF%AE/6/6_0004.png)
 
 ヘルスチェックNGアラート設定
-![6_0005](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0005.png)
+![6_0005](./%E7%A0%94%E4%BF%AE/6/6_0005.png)
 
 動作テスト(Webアプリケーション停止)
-![6_0006](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0006.png)
+![6_0006](./%E7%A0%94%E4%BF%AE/6/6_0006.png)
 
 ALB上で異常を確認
-![6_0007](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0007.png)
+![6_0007](./%E7%A0%94%E4%BF%AE/6/6_0007.png)
 
 アラートメール受信
-![6_0008](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0008.png)
+![6_0008](./%E7%A0%94%E4%BF%AE/6/6_0008.png)
 
 アラートページにてアラート状態であることを確認
 
-![6_0009](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0009.png)
+![6_0009](./%E7%A0%94%E4%BF%AE/6/6_0009.png)
 
 動作テスト(Webアプリケーション復旧)
-![6_0010](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0010.png)
+![6_0010](./%E7%A0%94%E4%BF%AE/6/6_0010.png)
 
 アラートページにてOK状態であることを確認
-![6_0011](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0011.png)
+![6_0011](./%E7%A0%94%E4%BF%AE/6/6_0011.png)
 
 復旧メール受信
-![6_0012](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0012.png)
+![6_0012](./%E7%A0%94%E4%BF%AE/6/6_0012.png)
 
 
 - AWS 利用料の見積を作成してください。
@@ -52,7 +52,7 @@ https://calculator.aws/#/estimate?id=73f3bf2ff274d9dd996bc4f1085bacca2b2ee4f1
 
 - マネジメントコンソールから、現在の利用料を確認して教えてください。
 
-![6_0013](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0013.png)
+![6_0013](./%E7%A0%94%E4%BF%AE/6/6_0013.png)
 
-![6_0014](https://github.com/GORO-HOGE/AWS_kns/blob/lecture06/%E7%A0%94%E4%BF%AE/6/6_0014.png)
+![6_0014](./%E7%A0%94%E4%BF%AE/6/6_0014.png)
 
