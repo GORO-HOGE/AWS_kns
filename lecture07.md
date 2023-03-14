@@ -11,6 +11,7 @@
 
   ・HTTPS 化をしていないため、通信データを見られてしまう(自分の場合は従業員データを見られてしまう可能性がある)<br>
     →cloudfrontを設置してサイトをHTTPS化する [参考サイト(AWSでWebサイトをHTTPS化 )](https://recipe.kc-cloud.jp/archives/11408/)<br>
+    →ALBの設定を変更しHTTPS化する [参考サイト(ACM SSL 証明書と Application Load Balancer の関連付け)](https://aws.amazon.com/jp/premiumsupport/knowledge-center/associate-acm-certificate-alb-nlb/)<br>
     
   ・WebサーバのパブリックIPを拒否していないため、不正アクセスされる可能性がある<br>
     →nginx の設定を変更(IP直指定のアクセスを拒否する)[参考サイト(nginxでIP直指定のアクセスを禁止)](https://hit.hateblo.jp/entry/elb/direct-ip/deny)<br>
