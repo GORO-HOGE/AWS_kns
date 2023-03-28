@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters: 
+  S3BucketName:
+    Description: Type of this BacketName.
+    Type: String
+
+Resources: 
+  #S3バケット作成
+  SampleBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub ${S3BucketName}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  
+  #バケットポリシー(ALBのアクセスログを格納できるように)
+  SampleBucketPolicy:
+      Type: 'AWS::S3::BucketPolicy'
+      Properties:
+        Bucket: !Ref SampleBucket
+        PolicyDocument: 
+          Version: 2012-10-17
+          Statement:
+            - Action:
+              - 's3:PutObject'
+              Effect: Allow
+              Resource: 
+                - !Sub 'arn:aws:s3:::${SampleBucket}/prefix/ALB-AccessLogs/AWSLogs/${AWS::AccountId}/*'
+                #- !Sub 'arn:aws:s3:::${SampleBucket}/*'
+              Principal: 
+                AWS: 'arn:aws:iam::582318560864:root'
+
+
+Outputs:
+  SampleBucket:
+    Value: !Ref SampleBucket
