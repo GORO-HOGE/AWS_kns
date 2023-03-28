@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources: 
+  #EC2のセキュリティグループ
+  knsSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "knsSGCF"
+      GroupDescription: "knsSG for CloudFormation"
+      VpcId: !ImportValue knsVPCID
+      SecurityGroupIngress:
+        - 
+          IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - 
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - 
+          IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: 0.0.0.0/0
+      
+      Tags:
+        - Key: Name
+          Value: knsSG
+
+  #EC2⇔RDSのセキュリティグループ(EC2側)
+  EC2ToRDSout:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "kns-SG-EC2-RDS-EC2Out"
+      GroupDescription: "EC2 to RDS EC2Out"
+      VpcId: !ImportValue knsVPCID
+      Tags:
+        - Key: Name
+          Value: EC2ToRDSout
+
+  #EC2⇔RDSのセキュリティグループ(EC2側)のインバウンドルール
+  #無し
+
+  #EC2⇔RDSのセキュリティグループ(EC2側)のアウトウンドルール
+  EC2ToRDSoutRule:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId: !Ref EC2ToRDSout
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref EC2ToRDSin
+
+
+  #EC2⇔RDSのセキュリティグループ(RDS側)
+  EC2ToRDSin:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "kns-SG-EC2-To-RDS-RDSin"
+      GroupDescription: "EC2 to RDS RDSin"
+      VpcId: !ImportValue knsVPCID
+      Tags:
+        - Key: Name
+          Value: EC2ToRDSin
+
+  #EC2⇔RDSのセキュリティグループ(RDS側)のインバウンドルール
+  EC2ToRDSinRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref EC2ToRDSin
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref EC2ToRDSout
+
+  #EC2⇔RDSのセキュリティグループ(RDS側)のアウトウンドルール
+
+
+  #ALBのセキュリティグループ
+  knsSGALB:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: "ELB ALB port80"
+      VpcId: !ImportValue knsVPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: knsSGALB
+Outputs:
+  #Webサーバ
+  knsSGID:
+    Value: !Ref knsSG
+    Export: 
+      Name: knsSGID
+
+  #EC2-RDS
+  EC2ToRDSoutID:
+    Value: !Ref EC2ToRDSout
+    Export: 
+      Name: EC2ToRDSoutID
+  
+  EC2ToRDSinID:
+    Value: !Ref EC2ToRDSin
+    Export: 
+      Name: EC2ToRDSinID
+
+  #ELB
+  knsSGALBID:
+    Value: !Ref knsSGALB
+    Export: 
+      Name: knsSGALBID

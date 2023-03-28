@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters: 
+  DBUser:
+    Type: String
+    Default: admin
+  DBPassword:
+    Type: String
+    NoEcho: true
+
+Resources: 
+  #RDS作成
+  knsRDS1a:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      DBInstanceIdentifier: kns-RDS-1a
+      DBName: knsRds1a
+      AllocatedStorage: "10"
+      DBInstanceClass: db.t2.micro
+      StorageType: gp2
+      AvailabilityZone: !ImportValue  AZ1ID
+      BackupRetentionPeriod: 0
+
+      #DBエンジン選択
+      Engine: mysql
+
+      #ユーザパスワード
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
+
+      #DBサブネットグループ選択
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      #セキュリティグループ選択(SG用YAMLファイルから取得)
+      VPCSecurityGroups:
+        - !ImportValue EC2ToRDSinID
+      Tags:
+        - Key: Name
+          Value: knsRDS1a
+  
+  #DBサブネットグループ作成
+  DBSubnetGroup: 
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: DB Subnet Group for Private Subnet
+      SubnetIds: 
+        - !ImportValue SubnetPrivate1ID
+        - !ImportValue SubnetPrivate2ID

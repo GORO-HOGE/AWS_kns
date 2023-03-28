@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  #最新の Amazon Linux 2 の AMI を取得
+  Ec2Image:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+
+Resources: 
+  #キーペア作成
+  KeyPairCF:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: KeyPairCF
+      KeyType: rsa
+  
+  #EC2作成
+  knsCFEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: !Ref KeyPairCF
+      
+      ImageId:  !Ref Ec2Image
+      
+      #AMI直接入力用
+      #ImageId:  amiID
+      
+      InstanceType: t2.micro
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - !ImportValue knsSGID
+            - !ImportValue EC2ToRDSoutID            
+          SubnetId: 
+            !ImportValue SubnetPublic1ID
+      UserData: !Base64 |
+        #!/bin/bash -ex
+        # put your script here
+      Tags:
+        - Key: Name
+          Value: knsCFEC2
+
+Outputs:
+  knsCFEC2Id:
+    Description: Instance ID
+    Value: !Ref knsCFEC2
+    Export: 
+      Name: knsCFEC2Id

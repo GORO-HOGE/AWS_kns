@@ -1,0 +1,167 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  #AvailabilityZone指定
+  AZ1:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: Select AZ1
+
+  AZ2:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: Select AZ2
+
+
+Resources: 
+  #VPC
+  knsVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: knsVPC
+
+  #subnet
+  #パブリック環境(各AZ)
+  SubnetPublic1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AZ1
+      VpcId: !Ref knsVPC
+      CidrBlock: 10.0.0.0/20
+      Tags:
+        - Key: Name
+          Value: !Sub  knsVPC-subnet-public1-${AZ1}
+  SubnetPublic2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AZ2
+      VpcId: !Ref knsVPC
+      CidrBlock: 10.0.16.0/20
+      Tags:
+        - Key: Name
+          Value: !Sub  knsVPC-subnet-public1-${AZ2}
+  #プライベート環境(各AZ)
+  SubnetPrivate1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AZ1
+      VpcId: !Ref knsVPC
+      CidrBlock: 10.0.128.0/20
+      Tags:
+        - Key: Name
+          Value: !Sub  knsVPC-subnet-private1-${AZ1}
+  SubnetPrivate2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AZ2
+      VpcId: !Ref knsVPC
+      CidrBlock: 10.0.144.0/20
+      Tags:
+        - Key: Name
+          Value: !Sub  knsVPC-subnet-private1-${AZ2}
+
+  #publicルートテーブル
+  routeTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref knsVPC
+      Tags:
+        - Key: Name
+          Value: routeTablePublic
+  #関連付け
+  routeTableAssocPublic1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:  !Ref SubnetPublic1
+      RouteTableId: !Ref routeTablePublic
+  routeTableAssocPublic2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:  !Ref SubnetPublic2
+      RouteTableId: !Ref routeTablePublic
+  
+  #privateルートテーブル
+  routeTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref knsVPC
+      Tags:
+        - Key: Name
+          Value: routeTablePrivate
+  #関連付け
+  routeTableAssocPrivate1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SubnetPrivate1
+      RouteTableId: !Ref routeTablePrivate
+  routeTableAssocPrivate2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SubnetPrivate2
+      RouteTableId: !Ref routeTablePrivate
+
+  #IGW
+  igwKns:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: igwKns
+  #関連付け
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref knsVPC
+      InternetGatewayId: !Ref igwKns
+  
+  #publicRTとIGWの関連付け
+  MyRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref routeTablePublic
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref igwKns
+
+Outputs:
+  #VPCID
+  knsVPCID:
+    Value: !Ref knsVPC
+    Export: 
+      Name: knsVPCID
+
+  #AZ1
+  AZ1ID:
+    Value: !Ref AZ1
+    Export: 
+      Name: AZ1ID
+
+  #AZ2
+  AZ2ID:
+    Value: !Ref AZ2
+    Export: 
+      Name: AZ2ID
+  
+  #SubnetPublic1ID
+  SubnetPublic1ID:
+    Value: !Ref SubnetPublic1
+    Export: 
+      Name: SubnetPublic1ID
+
+  #SubnetPublic2ID
+  SubnetPublic2ID:
+    Value: !Ref SubnetPublic2
+    Export: 
+      Name: SubnetPublic2ID
+  
+  #SubnetPrivate1ID
+  SubnetPrivate1ID:
+    Value: !Ref SubnetPrivate1
+    Export: 
+      Name: SubnetPrivate1ID
+  
+  #SubnetPrivate2ID
+  SubnetPrivate2ID:
+    Value: !Ref SubnetPrivate2
+    Export: 
+      Name: SubnetPrivate2ID
