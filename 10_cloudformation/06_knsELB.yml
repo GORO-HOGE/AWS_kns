@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  ALBlogbucket:
+    Type: String
+    Description: "ALBlogbucket"
+
+  ALBlogbucketprefix:
+    Type: String
+    Description: "ALBlogbucketprefix"
+
+Resources: 
+  #LB作成
+  FrontLB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${AWS::StackName}-ALB
+      Subnets:
+        - !ImportValue SubnetPublic1ID
+        - !ImportValue SubnetPublic2ID
+      SecurityGroups: 
+        - !ImportValue knsSGALBID
+      
+      #アクセスログの設定
+      LoadBalancerAttributes:
+        #アクセスログの有効/無効
+        - Key: access_logs.s3.enabled
+          Value: true
+        #アクセスログの格納先S3の名前
+        - Key: access_logs.s3.bucket
+          Value: !Ref ALBlogbucket
+        #アクセスログの格納先を指定
+        - Key: access_logs.s3.prefix
+          Value: !Ref ALBlogbucketprefix
+
+  #リスナー作成
+  FrontLBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref FrontLB
+      Port: 80
+      Protocol: HTTP 
+      DefaultActions: 
+        - Type: forward
+          TargetGroupArn: !Ref FrontLBTargetGroup
+
+  #ターゲットグループ作成
+  FrontLBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${AWS::StackName}-TG
+      VpcId: !ImportValue knsVPCID
+      Port: 8000
+      Protocol: HTTP
+      HealthCheckPath: /info
+      Targets:
+        - Id:
+            !ImportValue  knsCFEC2Id
